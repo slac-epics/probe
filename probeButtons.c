@@ -7,7 +7,7 @@
 * in the file LICENSE that is included with this distribution. 
 \*************************************************************************/
 /*
- * $Id$
+ * probeButtons.c,v 1.7 2004/11/20 00:27:49 evans Exp
  */
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>

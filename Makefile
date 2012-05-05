@@ -7,7 +7,7 @@
 # in the file LICENSE that is included with this distribution. 
 #*************************************************************************
 #
-# $Id$
+# Makefile,v 1.7 2002/08/02 15:39:58 jba Exp
 #
 TOP = ../..
 include $(TOP)/config/CONFIG_EXTENSIONS
