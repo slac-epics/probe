@@ -146,13 +146,13 @@ typedef struct HIStruct {
     short        currentSeverity;
     short        lastSeverity;
    
-    long         startTime;
-    long         lastMaxTime;
-    long         lastMinTime;
-    long         currentStatusTime;
-    long         lastStatusTime;
-    long         currentSeverityTime;
-    long         lastSeverityTime;
+    time_t       startTime;
+    time_t       lastMaxTime;
+    time_t       lastMinTime;
+    time_t       currentStatusTime;
+    time_t       lastStatusTime;
+    time_t       currentSeverityTime;
+    time_t       lastSeverityTime;
 
     char         startTimeStr[12];
     char         lastMaxTimeStr[12];
@@ -367,9 +367,15 @@ void updateLabelDisplay(atom *channel,unsigned int i);
 void updateStatusDisplay(atom *channel,unsigned int i);
 void updateTextDisplay(atom *channel,unsigned int i);
 
+#ifdef PROBE_ALLOCATE_STORAGE
+#define PROBE_EXTERN
+#else
+#define PROBE_EXTERN extern
+#endif
+
 /* Global variables */
-Widget toplevel;
-Window mainwindow;
-Cursor watch;
-Display *display;
-int ca_pend_io_time;
+PROBE_EXTERN Widget toplevel;
+PROBE_EXTERN Window mainwindow;
+PROBE_EXTERN Cursor watch;
+PROBE_EXTERN Display *display;
+PROBE_EXTERN int ca_pend_io_time;

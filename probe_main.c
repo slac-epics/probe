@@ -23,7 +23,7 @@
 #include <Xm/MessageB.h>
 #include "epicsVersion.h"
 
-#ifdef  WIN32
+#ifdef  EXCEED
 #include <X11/XlibXtra.h>
 #endif
 
@@ -35,6 +35,7 @@
 
 #include <cadef.h>
 
+#define PROBE_ALLOCATE_STORAGE
 #include "probe.h"
 
 extern Widget createAndPopupProductDescriptionShell();
@@ -89,9 +90,10 @@ int main(int argc, char *argv[])
     int n,i;
     Arg wargs[5];
     char *pvname=(char *)0;
+    char versionString[] = PROBE_VERSION_STRING " (" EPICS_VERSION_STRING ")";
 
   /* WIN32 initialization */
-#ifdef WIN32
+#ifdef EXCEED
     HCLXmInit();
 #if 0
     fprintf(stderr,"Probe: (1/4) Test fprintf to stderr\n");
@@ -342,8 +344,6 @@ int main(int argc, char *argv[])
 
   /* Splash screen */
     {
-	char versionString[50];
-	sprintf(versionString,"%s (%s)",PROBE_VERSION_STRING,EPICS_VERSION_STRING);
 	productDescriptionShell =    
 	  createAndPopupProductDescriptionShell(app,toplevel,
 	    "Probe", fontList, NULL,
@@ -436,7 +436,7 @@ void errmsg(const char *fmt, ...)
     va_end(vargs);
     
     if(lstring[0] != '\0') {
-#ifdef WIN32
+#ifdef EXCEED
 	lprintf("%s\n",lstring);
 #else
 	fprintf(stderr,"%s\n",lstring);
@@ -463,8 +463,13 @@ void xerrmsg(const char *fmt, ...)
 	nargs=0;
 	XtSetArg(args[nargs],XmNtitle,"Warning"); nargs++;
 	XtSetArg(args[nargs],XmNmessageString,cstring); nargs++;
+#ifndef WIN32
 	warningbox=XmCreateWarningDialog(toplevel,"warningMessage",
 	  args,nargs);
+#else
+	warningbox=XmCreateMessageDialog(toplevel,"warningMessage",
+	  args,nargs);
+#endif
 	XmStringFree(cstring);
 	child=XmMessageBoxGetChild(warningbox,XmDIALOG_CANCEL_BUTTON);
 	XtDestroyWidget(child);
@@ -472,7 +477,7 @@ void xerrmsg(const char *fmt, ...)
 	XtDestroyWidget(child);
 	XtManageChild(warningbox);
 	XtAddCallback(warningbox,XmNokCallback,killWidget,NULL);
-#ifdef WIN32
+#ifdef EXCEED
 	lprintf("%s\n",lstring);
 #else
 	fprintf(stderr,"%s\n",lstring);
@@ -491,7 +496,11 @@ int questionDialog(char *message, char *okBtnLabel, char *cancelBtnLabel,
     if(message == NULL) return -1;
     
   /* Create the dialog */
+#ifndef WIN32
     questionDialog = XmCreateQuestionDialog(toplevel,"questionDialog",NULL,0);
+#else
+    questionDialog = XmCreateMessageDialog(toplevel,"questionDialog",NULL,0);
+#endif
     XtVaSetValues(questionDialog,XmNdialogStyle,XmDIALOG_APPLICATION_MODAL,
       NULL);
     XtVaSetValues(XtParent(questionDialog),XmNtitle,"Question ?",NULL);
@@ -597,7 +606,7 @@ static void usage(void)
 char *timeStamp(void)
 {
 	static char timeStampStr[16];
-	long now;
+	time_t now;
 	struct tm *tblock;
 	
 	time(&now);
