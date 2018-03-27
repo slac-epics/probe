@@ -10,8 +10,7 @@
 # $Id$
 #
 # Makefile for Probe
-
-TOP = ../..
+TOP=.
 include $(TOP)/configure/CONFIG
 
 # Optimization
@@ -103,6 +102,7 @@ SRCS +=	probe_main.c
 SRCS +=	productDescriptionShell.c
 
 include $(TOP)/configure/RULES
+include $(TOP)/configure/RULES_TOP
 
 probe.res:../probe.ico
 
@@ -115,6 +115,7 @@ xxxx:
 	@echo Xt_DIR = $(X11_LIB)
 	@echo EPICS_HOST_ARCH = $(EPICS_HOST_ARCH)
 	@echo HOST_ARCH = $(HOST_ARCH)
+	@echo T_A = $(T_A)
 
 # **************************** Emacs Editing Sequences *****************
 # Local Variables:
