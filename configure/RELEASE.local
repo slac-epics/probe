@@ -1,5 +1,6 @@
 # RELEASE.local
 -include $(TOP)/../../RELEASE_SITE
+-include $(TOP)/RELEASE_SITE
 
 # See if is being built in an EPICS extensions release
 ifneq ($(wildcard $(TOP)/../../configure/CONFIG),)
